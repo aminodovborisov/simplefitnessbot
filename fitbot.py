@@ -61,7 +61,7 @@ def callback_inline(call):
             text=on_time_sel(train_times[call.data])
         )
         train_query["time"] = train_times[call.data]
-        bot.send_message(call.from_user.id, '@Youtube ' + 'Тренировка ' + train_query['type'] + ' ' + train_query['time'])
+        bot.send_message(call.from_user.id, 'А на этом пока всё! Пока!')
         
 
 if __name__ == '__main__':
