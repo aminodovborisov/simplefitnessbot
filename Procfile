@@ -1,1 +1,1 @@
-worker: python simplefitnessbot.py
+web: python3 main.py
