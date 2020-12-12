@@ -2,6 +2,8 @@
 
 import telebot
 from telebot import types
+import logging
+
 
 train_types = {
     "yoga": "Йога",
@@ -38,14 +40,14 @@ train_query = {}
 
 @bot.message_handler(commands=['start'])
 def greeting(message):
-    # msg = bot.reply_to(message, 'Выберите тип тренировки', reply_markup=kbd_trains)
-    print(message.chat.id)
+    logging.log('Будем выбирать тип тренировки')
     bot.send_message(message.chat.id, 'Тип тренировки:', reply_markup=kbd_trains)
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
     print(call)
     if call.data in train_types.keys():
+        logging.log('Тип тренировки выбран: ' + call.data)
         bot.edit_message_text(
             chat_id=call.message.chat.id, 
             message_id=call.message.message_id, 
@@ -60,9 +62,11 @@ def callback_inline(call):
             message_id=call.message.message_id, 
             text=on_time_sel(train_times[call.data])
         )
+        logging.log('Продолжительность тренировки выбрана: ' + call.data)
         train_query["time"] = train_times[call.data]
         bot.send_message(call.from_user.id, 'А на этом пока всё! Пока!')
         
 
 if __name__ == '__main__':
+    logging.log('Если вы это видите, значит, работа начата!')
     bot.infinity_polling()
